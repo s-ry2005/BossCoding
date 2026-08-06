@@ -1,0 +1,36 @@
+# bosscoding:managed-ci
+# BossCoding 质检口（请用项目选定的包管理器执行 `bosscoding update`；自定义步骤请放独立的 workflow 文件）
+name: bosscoding
+
+on:
+  pull_request:
+    branches: ["main"]
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: ["main"]
+
+# 只读代码，不写任何 GitHub 资源。
+permissions:
+  contents: read
+
+jobs:
+  check:
+    # Draft（草稿）PR 不占质检额度；转 Ready 才跑，工位名换成 draft-skip 以免遮住必过检查。
+    # 坑位警示：GitHub 对被跳过的任务不求值下面这个 name 表达式——在它的接口里，这条检查的
+    # 名字会显示为表达式全文。写任何「按检查名字匹配」的工具时不要依赖这个名字
+    # （上游实战教训：一个合并脚本因此每次等待都超时，且两个月无人发现）。
+    name: ${{ github.event_name == 'pull_request' && github.event.pull_request.draft && 'draft-skip' || 'check' }}
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 安装依赖
+        run: if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi
+      # 云端与本地交付共用同一扇总闸；项目原有检查会由 init/update 收进 preflight。
+      - name: 交付前自检
+        run: npm run preflight
