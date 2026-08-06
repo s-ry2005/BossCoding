@@ -187,3 +187,17 @@ test("四阶梯技能：先验收再注册，质检承诺不夸大", () => {
   assert.match(ladder, /不一定能硬性拦住网页合并/);
   assert.match(ladder, /不要让老板执行命令或清理工作区/);
 });
+
+test("完整收尾技能：线上验证、知识收尾和确认式清理不可混用", () => {
+  const dir = tmp();
+  installSkills(dir);
+  const closeout = fs.readFileSync(path.join(dir, ".agents/skills/boss-closeout/SKILL.md"), "utf8");
+
+  assert.match(closeout, /真实线上入口/);
+  assert.match(closeout, /neat-freak/);
+  assert.match(closeout, /老板看完完整报告后明确确认/);
+  assert.match(closeout, /已合并/);
+  assert.match(closeout, /线上已验证/);
+  assert.match(closeout, /知识已收尾/);
+  assert.match(closeout, /已清理/);
+});

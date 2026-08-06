@@ -5,6 +5,8 @@ description: 按 BossCoding 流程开始并交付一个开发任务。项目根�
 
 <!-- bosscoding:managed-skill -->
 
+合并后不把“已合并”说成“已上线”或“任务完成”。有部署、发布、线上地址或正式交付时，立即进入 `boss-closeout`：先完成真实线上验证，再做知识收尾；纯本地项目也要进入它核实适用状态。
+
 # BossCoding 干活流程
 
 1. 开工前完整阅读项目根目录的 `AGENTS.md`，全程遵守导师模式和红线。拿不准真实状态，就用项目选定的包管理器执行 `bosscoding status`，不要读文档猜。
