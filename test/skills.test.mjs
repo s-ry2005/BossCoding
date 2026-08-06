@@ -171,6 +171,7 @@ test("交付技能：AI 负责预览、本地收尾与老板下一步", () => {
   assert.doesNotMatch(flow, /\bnpx boss\b/);
   assert.doesNotMatch(flow, /git checkout main/);
   assert.match(flow, /docs\/decisions\//);
+  assert.match(flow, /独立交互任务/);
   assert.match(flow, /不自动删除任务工作区/);
   assert.match(flow, /一句可直接说给 AI 的自然语言/);
 });
