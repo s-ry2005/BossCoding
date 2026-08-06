@@ -66,6 +66,7 @@ test("init：空目录一次装齐全部资产", () => {
     "docs/decisions/_template.md",
     ".agents/skills/boss-flow/SKILL.md",
     ".agents/skills/boss-ladder/SKILL.md",
+    ".agents/skills/boss-closeout/SKILL.md",
     ".gemini/settings.json",
     ".iflow/settings.json",
     ".gitignore",
@@ -84,7 +85,7 @@ test("init：空目录一次装齐全部资产", () => {
   assert.ok(claude.includes("@AGENTS.md"));
 
   // Claude 技能入口必须是真实文件，不能是软链——软链在 Windows 上克隆后静默失效。
-  for (const skill of ["boss-flow", "boss-ladder"]) {
+  for (const skill of ["boss-flow", "boss-ladder", "boss-closeout"]) {
     const entry = path.join(dir, ".claude/skills", skill);
     assert.ok(fs.existsSync(path.join(entry, "SKILL.md")), `缺 Claude 技能入口 ${skill}`);
     assert.equal(fs.lstatSync(entry).isSymbolicLink(), false, `${skill} 不该是软链`);

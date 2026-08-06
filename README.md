@@ -56,6 +56,12 @@ npm install
 
 如果一开始就明确要正式上线，告诉 AI，它会说明是否应提前准备服务器和域名。纯本地小工具不需要服务器或域名。完整裁决见 [四阶梯决策档案](docs/decisions/2026-07-27-progressive-ladder.md)。
 
+## 合并后的完整交付
+
+第三个技能 `boss-closeout` 把“开发到合并”补成完整闭环：部署后直接验证真实入口、用 `neat-freak` 做知识收尾、完整汇报并保留现场，最后只在你明确确认后清理精确对象。它不会提供通用部署脚本，也不会把 CI 绿或部署日志说成线上可用。
+
+没有部署目标的本地工具会标记为 `not-applicable`；无法核实的状态保持 `pending`。完整裁决见 [线上验证与知识收尾](docs/decisions/2026-08-06-live-verification-and-closeout.md)。
+
 ## 装了什么
 
 | 文件或命令 | 作用 |
@@ -70,7 +76,7 @@ npm install
 | `.github/workflows/bosscoding.yml` | GitHub 上的自动检查：改动正式送检时运行并显示结果 |
 | `docs/decisions/` | 重要产品裁决的档案室：记下结论和原因，只追加、不篡改历史 |
 | 三个本地保护脚本 | 防止并行任务互相踩踏，并阻止 AI 手滑直推稳定版本 |
-| 两个 BossCoding 技能 | 教 AI 完成交付，并在正确时机推进 GitHub、服务器和域名 |
+| 三个 BossCoding 技能 | 教 AI 完成交付、渐进推进 GitHub/服务器/域名，并完成真实验证、知识收尾与确认式清理 |
 
 ## 四条设计原则
 

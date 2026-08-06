@@ -5,6 +5,8 @@ description: 按 BossCoding 流程开始并交付一个开发任务。项目根�
 
 <!-- bosscoding:managed-skill -->
 
+合并或正式交付后必须进入 `boss-closeout`。已合并不等于已部署、已验证或已完成；不得跳过收尾汇报和用户确认。
+
 # BossCoding 干活流程
 
 1. 开工前完整阅读项目根目录的 `AGENTS.md`，全程遵守导师模式和红线。拿不准真实状态，就用项目选定的包管理器执行 `bosscoding status`，不要读文档猜。

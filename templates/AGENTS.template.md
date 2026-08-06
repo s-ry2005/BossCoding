@@ -69,6 +69,13 @@
 - 动权限、密钥、账号设置；一切不可逆操作。
 - 密钥、令牌、密码永不写进代码，只放在 `.env`（本机专用的私密配置文件）中；该文件必须被版本记录忽略。
 <!-- bosscoding:redlines-start 本项目专属红线补在下面，每条写明「违反后伤到谁」： -->
+
+## 完整交付收尾
+
+- 合并、部署或正式交付后使用 `boss-closeout`，依次核实 merged、deployed、live-verified、knowledge-closed、reported、cleanup-approved、cleaned、done；不能核实写 pending，无部署目标写 not-applicable。
+- 线上验证要直接检查真实入口、版本标识、核心用户路径、本次改动结果和时间；CI、部署日志和可连接接口都不能代替。
+- 知识收尾调用 `neat-freak`，不可用时做六面等价审计并如实报告；记忆只在平台与用户授权允许时更新。
+- 清理前完整汇报并保留现场；只在老板看完报告后明确确认时，才处理逐项列出的可恢复且归属明确对象，并重新审计。
 <!-- bosscoding:redlines-end -->
 
 ## 事故与立法

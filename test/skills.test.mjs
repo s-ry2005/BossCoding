@@ -187,3 +187,30 @@ test("四阶梯技能：先验收再注册，质检承诺不夸大", () => {
   assert.match(ladder, /不一定能硬性拦住网页合并/);
   assert.match(ladder, /不要让老板执行命令或清理工作区/);
 });
+
+test("完整收尾技能：官方版本可刷新，用户同名版本不覆盖", () => {
+  const dir = tmp();
+  installSkills(dir);
+  const official = path.join(dir, ".agents/skills/boss-closeout/SKILL.md");
+  fs.appendFileSync(official, "\n旧版残留\n");
+  const refreshed = installSkills(dir);
+  assert.ok(refreshed.refreshed.includes(".agents/skills/boss-closeout/SKILL.md"));
+  assert.doesNotMatch(fs.readFileSync(official, "utf8"), /旧版残留/);
+
+  const customDir = tmp();
+  const custom = path.join(customDir, ".agents/skills/boss-closeout/SKILL.md");
+  fs.mkdirSync(path.dirname(custom), { recursive: true });
+  fs.writeFileSync(custom, "---\nname: boss-closeout\n---\n\n我的收尾规则。\n");
+  const protectedResult = installSkills(customDir);
+  assert.ok(protectedResult.skipped.includes(".agents/skills/boss-closeout/SKILL.md"));
+  assert.match(fs.readFileSync(custom, "utf8"), /我的收尾规则/);
+});
+
+test("完整收尾技能：包含真实验证、六面审计、报告确认和复查", () => {
+  const dir = tmp();
+  installSkills(dir);
+  const closeout = fs.readFileSync(path.join(dir, ".agents/skills/boss-closeout/SKILL.md"), "utf8");
+  for (const required of ["真实线上入口", "neat-freak", "完整报告后明确确认", "临时数据库", "重新审计", "live-verified", "cleanup-approved"]) {
+    assert.match(closeout, new RegExp(required));
+  }
+});
