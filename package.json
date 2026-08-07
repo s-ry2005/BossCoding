@@ -1,6 +1,6 @@
 {
   "name": "bosscoding",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "给不会编程的产品老板：一句话把 AI 协作规则、真实状态检查和安全收尾装进项目，Codex、Claude Code 等都能用。",
   "keywords": [
     "agent",
