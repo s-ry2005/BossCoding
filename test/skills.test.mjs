@@ -215,3 +215,13 @@ test("完整收尾技能：包含真实验证、六面审计、报告确认和�
     assert.match(closeout, new RegExp(required));
   }
 });
+
+test("交付技能：Unix 本地路径只能由老板明确开启", () => {
+  const dir = tmp();
+  installSkills(dir);
+  const flow = fs.readFileSync(path.join(dir, ".agents/skills/boss-flow/SKILL.md"), "utf8");
+
+  assert.match(flow, /默认使用当前原生系统环境/);
+  assert.match(flow, /只有老板明确说「本任务使用 WSL\/Ubuntu」时/);
+  assert.match(flow, /不得因为类 Unix 差异自行切到 WSL、Ubuntu、容器或另一套工作区/);
+});

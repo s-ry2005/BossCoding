@@ -83,6 +83,8 @@ test("init：空目录一次装齐全部资产", () => {
   // 门牌必须是 @ 导入桩，不是第二份真身。
   const claude = fs.readFileSync(path.join(dir, "CLAUDE.md"), "utf8");
   assert.ok(claude.includes("@AGENTS.md"));
+  const agents = fs.readFileSync(path.join(dir, "AGENTS.md"), "utf8");
+  assert.match(agents, /只有老板明确说「本任务使用 WSL\/Ubuntu」时/);
 
   // Claude 技能入口必须是真实文件，不能是软链——软链在 Windows 上克隆后静默失效。
   for (const skill of ["boss-flow", "boss-ladder", "boss-closeout"]) {
