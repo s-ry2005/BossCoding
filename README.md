@@ -34,6 +34,10 @@ Kimi Code、Qwen Code、Cursor、GitHub Copilot、Trae、CodeBuddy、通义灵�
 
 这个入口只适合你当前电脑。等改版真正发布到 npm 后，回到上面的原版一键安装方式；PR #3 只负责 BossCoding 自己的 CI，不影响这里的本机使用。
 
+### 环境选择：默认 Windows，明确才用 WSL
+
+日常在 Windows 上开发时，不需要安装或打开 WSL。AI 默认在当前 Windows 环境完成本地检查，并把完整 `npm run preflight` 交给 GitHub 的 Ubuntu CI；不会因为 Linux 与 Windows 的差异自行换环境。只有你在任务开头明确说「本任务使用 WSL/Ubuntu」时，AI 才会启用本地 Unix 路径；即使启用，测试和 CI 也不能跳过。
+
 ### 备用：自己在终端安装
 
 终端就是电脑里输入命令的应用。在刚才那个空文件夹的终端里依次运行：
