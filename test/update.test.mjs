@@ -630,3 +630,21 @@ test("update：同路径自定义 CI／决策模板与同名技能、合并 hook
   assert.equal(fs.readFileSync(skillPath, "utf8"), skillBefore);
   assert.match(fs.readFileSync(hookPath, "utf8"), /node my-check\.mjs/);
 });
+
+test("update：完整收尾技能刷新官方版本但保护用户同名版本", () => {
+  const dir = tmpProject();
+  initGit(dir);
+  fs.writeFileSync(path.join(dir, "package.json"), packageBody());
+  assert.equal(runUpdate(dir, { refreshOnly: true }), 0);
+
+  const official = path.join(dir, ".agents/skills/boss-closeout/SKILL.md");
+  fs.appendFileSync(official, "\n旧版残留\n");
+  assert.equal(runUpdate(dir, { refreshOnly: true }), 0);
+  assert.doesNotMatch(fs.readFileSync(official, "utf8"), /旧版残留/);
+
+  const custom = path.join(dir, ".claude/skills/boss-closeout/SKILL.md");
+  fs.writeFileSync(custom, "---\nname: boss-closeout\n---\n\n我的收尾规则。\n");
+  const result = runUpdate(dir, { refreshOnly: true });
+  assert.equal(result, 1);
+  assert.match(fs.readFileSync(custom, "utf8"), /我的收尾规则/);
+});

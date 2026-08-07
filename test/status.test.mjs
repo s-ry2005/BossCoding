@@ -534,3 +534,19 @@ test("不是版本库：明确失败并指路 init", () => {
     unmute();
   }
 });
+
+test("状态：缺少或篡改完整收尾技能时不能亮绿", () => {
+  const missingDir = project();
+  const missing = path.join(missingDir, ".agents/skills/boss-closeout/SKILL.md");
+  fs.rmSync(missing);
+  const missingState = probe(missingDir);
+  assert.equal(missingState.skillsReady, false);
+  assert.ok(missingState.missingSkills.includes(".agents/skills/boss-closeout/SKILL.md"));
+
+  const alteredDir = project();
+  const altered = path.join(alteredDir, ".agents/skills/boss-closeout/SKILL.md");
+  fs.writeFileSync(altered, "---\nname: boss-closeout\n---\n\n用户篡改版本。\n");
+  const alteredState = probe(alteredDir);
+  assert.equal(alteredState.skillsReady, false);
+  assert.ok(alteredState.missingSkills.includes(".agents/skills/boss-closeout/SKILL.md"));
+});
