@@ -6,7 +6,7 @@ BossCoding 专为第一次用 AI 做产品的人设计。你只负责说想法�
 
 已经装好 Codex 或 Claude Code？不用先学编程、终端或 GitHub，也不用先买任何东西。
 
-## 最省事的开工方式：复制一句话给 AI
+## 使用上游公开版：最省事的开工方式
 
 1. 新建一个空文件夹，只用来放这个产品。
 2. 在 Codex 或 Claude Code 里打开它。
@@ -18,21 +18,31 @@ BossCoding 专为第一次用 AI 做产品的人设计。你只负责说想法�
 
 接下来只管说想法。第一版会先在你的电脑上跑起来；在你亲眼看到并验收之前，AI 不会催你注册 GitHub 或购买服务器。
 
+上面这条命令安装的是 npm 上的上游公开版。要使用本 fork 已合并的增强流程，请看下一节。
+
 Kimi Code、Qwen Code、Cursor、GitHub Copilot、Trae、CodeBuddy、通义灵码、Gemini CLI 和 iFlow 也能读取同一份规则。
 
-### 本机改版：不等 npm 发布也能直接用
+### 使用这个 fork 的正式 main
 
-如果你正在使用这个 fork 的改版（含 `boss-closeout`），而它还没有发布到 npm，就把下面整段话复制给 AI。它会使用你电脑上的改版，不会下载 npm 上的原版；这不依赖 PR #3 的 CI。
+这个 fork 的 `main` 已包含第三个 `boss-closeout` 技能、GitHub Ubuntu CI 和 Windows 命令退出修复。但它尚未以独立包名发布到 npm，因此 `npx bosscoding@latest` 安装的是上游公开版本，**不会**自动带上本 fork 的增强流程。
 
-```text
-请把当前打开的空文件夹作为我的新产品项目。先确认这里确实没有私人文件，再检查 Git 是否可用。不要安装软件、不要运行 npx 或 npm。
+要在自己的电脑上使用本 fork，先克隆它：
 
-使用本地改版 BossCoding：Node 是 C:\Users\17840\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe，BossCoding 入口是 D:\chatgpt 工作目录\优化bosscoding-完整收尾闭环\bin\bosscoding.mjs。
-
-在当前项目运行本地改版的 init，完整阅读根目录 AGENTS.md 和已安装技能；再运行本地改版的 check 与 status，确认规则、分支纪律和 boss-closeout 收尾流程已生效。不要执行 npm preflight；如需要产品测试，用 Node 直接运行可用测试。除非需要我花钱、授权、删除数据或对外发布，其余步骤都由你完成。最后只问我：「你想做个什么？」
+```powershell
+git clone https://github.com/s-ry2005/BossCoding.git
 ```
 
-这个入口只适合你当前电脑。等改版真正发布到 npm 后，回到上面的原版一键安装方式；PR #3 只负责 BossCoding 自己的 CI，不影响这里的本机使用。
+然后在新产品的空文件夹中安装该本地副本。把下面的 `<BossCoding-fork-路径>` 换成克隆后 `BossCoding` 文件夹的实际完整路径：
+
+```powershell
+npm install --save-dev "file:<BossCoding-fork-路径>"
+npx bosscoding init
+npm install
+npm run preflight
+npx bosscoding status
+```
+
+这样产品项目会明确依赖你的本 fork；以后 `npx bosscoding` 调用的也是本地安装的改版。该路径适合你自己的电脑；若要让其他电脑也能一键安装，需要另行决定包名、版本和 npm 发布，发布前必须取得你的确认。
 
 ### 环境选择：默认 Windows，明确才用 WSL
 
