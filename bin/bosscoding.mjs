@@ -107,10 +107,18 @@ async function main() {
   return cmd === undefined || cmd === "--help" || cmd === "-h" ? 0 : 1;
 }
 
+// Windows 兼容：子进程句柄关闭期间直接 process.exit 会触发 libuv 断言
+// （src/win/async.c，表现为 exit 127）。只设 exitCode 让事件循环自然结束；
+// 兜底定时器防残留句柄挂起，unref 保证不阻挡正常退出。
+function settle(code) {
+  process.exitCode = code;
+  setTimeout(() => process.exit(process.exitCode ?? 0), 2000).unref();
+}
+
 try {
-  process.exit(await main());
+  settle(await main());
 } catch {
   console.error("✗ BossCoding 遇到意外问题，本次没有完成。");
   console.error("  把这句话交给 AI：「检查当前项目状态和文件权限，找出 BossCoding 命令失败的原因，修好后重试；不要把原始报错丢给我。」");
-  process.exit(1);
+  settle(1);
 }
