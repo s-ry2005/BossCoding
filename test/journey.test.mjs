@@ -11,6 +11,8 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { packageIdentity } from "../lib/package-identity.mjs";
+
 const PACKAGE_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const SOURCE_CLI = path.join(PACKAGE_ROOT, "bin", "bosscoding.mjs");
 const GIT_ENV = {
@@ -68,7 +70,7 @@ test("黑盒老板旅程：空目录做到首个任务安全回到稳定版本",
 
     const pkgPath = path.join(project, "package.json");
     const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-    pkg.devDependencies.bosscoding = `file:${PACKAGE_ROOT}`;
+    pkg.devDependencies[packageIdentity().name] = `file:${PACKAGE_ROOT}`;
     pkg.scripts.test = "node --test test/product.test.mjs";
     fs.writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`);
 

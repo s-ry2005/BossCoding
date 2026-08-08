@@ -17,6 +17,7 @@ import {
   refuseReason,
 } from "../lib/commands/init.mjs";
 import { runCheck } from "../lib/commands/check.mjs";
+import { packageIdentity } from "../lib/package-identity.mjs";
 import { DEFAULT_PREFLIGHT, defaultPreflight } from "../lib/preflight.mjs";
 
 const CLI = fileURLToPath(new URL("../bin/bosscoding.mjs", import.meta.url));
@@ -78,7 +79,8 @@ test("init：空目录一次装齐全部资产", () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(dir, "package.json"), "utf8"));
   assert.equal(pkg.scripts.preflight, DEFAULT_PREFLIGHT);
   assert.equal(pkg.scripts.test, "node --test");
-  assert.ok(pkg.devDependencies.bosscoding);
+  const framework = packageIdentity();
+  assert.equal(pkg.devDependencies[framework.name], `^${framework.version}`);
 
   // 门牌必须是 @ 导入桩，不是第二份真身。
   const claude = fs.readFileSync(path.join(dir, "CLAUDE.md"), "utf8");

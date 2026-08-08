@@ -1,8 +1,8 @@
 # BossCoding 项目规则
 
 给 AI 协作项目的开发流程地基：`npx bosscoding init` 一条命令装好规则文件、守卫、CI 质检口、决策档案与技能，任何 coding agent 通吃（守卫数量是会变的状态，跑 `node bin/bosscoding.mjs check` 看）。纯 Node ESM，运行时零第三方依赖。
-包 https://www.npmjs.com/package/bosscoding ｜ 仓库 https://github.com/KKKKhazix/BossCoding （公开，MIT）
-线上是哪个版本跑 `npm view bosscoding version` 看——版本号是会变的状态，不写死在本文件里。
+包 https://www.npmjs.com/package/@s-ry2005/bosscoding ｜ 仓库 https://github.com/s-ry2005/BossCoding （公开，MIT）
+线上是哪个版本跑 `npm view @s-ry2005/bosscoding version` 看——版本号是会变的状态，不写死在本文件里。
 
 本文件是唯一的规则真身；CLAUDE.md 只是指过来的门牌，改规则只改本文件。
 机器守卫：`npm run preflight`（单测＋`node bin/bosscoding.mjs check`）。
@@ -23,7 +23,7 @@
 - 多个 agent 并行时各开独立工作区（`git worktree add`），主工作区只留在 main 上；有 git hook 盯着。
 - CI 红了默认响应是撤销或修复，不是加新检查。
 - 发版本：改 `package.json` 版本号走 PR 合并，老板确认后 `gh workflow run publish.yml` 触发。走可信发布，不用令牌也不用验证码；本机 `npm publish` 只是应急退路。
-- 合并不等于已发布：版本号进了 main 而没人触发 publish，npm 上就一直是旧版。发包是红线不能自动，所以改版本号的 PR 正文必须写明谁来触发；`npm view bosscoding version` 是唯一真实状态。
+- 合并不等于已发布：版本号进了 main 而没人触发 publish，npm 上就一直是旧版。发包是红线不能自动，所以改版本号的 PR 正文必须写明谁来触发；`npm view @s-ry2005/bosscoding version` 是唯一真实状态。
 
 ## 知识只有三个所在
 
