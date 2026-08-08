@@ -15,6 +15,7 @@ import { packageIdentity } from "../lib/package-identity.mjs";
 
 const PACKAGE_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const SOURCE_CLI = path.join(PACKAGE_ROOT, "bin", "bosscoding.mjs");
+const PACKAGE_PATH_SEGMENTS = packageIdentity().name.split("/");
 const GIT_ENV = {
   ...process.env,
   GIT_AUTHOR_NAME: "boss",
@@ -96,7 +97,7 @@ test("黑盒老板旅程：空目录做到首个任务安全回到稳定版本",
     git(project, "add", "-A");
     git(project, "commit", "-qm", "first visible product");
 
-    run(project, process.execPath, [path.join(project, "node_modules", "bosscoding", "bin", "bosscoding.mjs"), "task", "按钮更清楚"]);
+    run(project, process.execPath, [path.join(project, "node_modules", ...PACKAGE_PATH_SEGMENTS, "bin", "bosscoding.mjs"), "task", "按钮更清楚"]);
     assert.equal(git(target, "branch", "--show-current"), "lane/按钮更清楚");
 
     writeProduct(target, "马上开始");
@@ -107,7 +108,7 @@ test("黑盒老板旅程：空目录做到首个任务安全回到稳定版本",
     const finishOutput = run(
       target,
       process.execPath,
-      [path.join(target, "node_modules", "bosscoding", "bin", "bosscoding.mjs"), "finish"],
+      [path.join(target, "node_modules", ...PACKAGE_PATH_SEGMENTS, "bin", "bosscoding.mjs"), "finish"],
     );
     assert.match(finishOutput, /任务已安全快进合并/);
     assert.equal(git(project, "rev-parse", "main"), accepted);
@@ -116,7 +117,7 @@ test("黑盒老板旅程：空目录做到首个任务安全回到稳定版本",
     const statusOutput = run(
       project,
       process.execPath,
-      [path.join(project, "node_modules", "bosscoding", "bin", "bosscoding.mjs"), "status"],
+      [path.join(project, "node_modules", ...PACKAGE_PATH_SEGMENTS, "bin", "bosscoding.mjs"), "status"],
     );
     assert.match(statusOutput, /已保留：1 个任务工作区已经合并/);
     assert.doesNotMatch(statusOutput, /进行中的任务：1 条/);
