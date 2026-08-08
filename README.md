@@ -6,43 +6,25 @@ BossCoding 专为第一次用 AI 做产品的人设计。你只负责说想法�
 
 已经装好 Codex 或 Claude Code？不用先学编程、终端或 GitHub，也不用先买任何东西。
 
-## 使用上游公开版：最省事的开工方式
+## 使用这个改版：最省事的开工方式
 
 1. 新建一个空文件夹，只用来放这个产品。
 2. 在 Codex 或 Claude Code 里打开它。
 3. 把下面整段复制给 AI：
 
 ```text
-请把当前打开的空文件夹作为我的新产品项目。先确认这里确实没有私人文件，再检查版本记录工具 Git 和运行工具 Node.js 是否可用；缺什么就用大白话告诉我，并尽力替我安装。然后依次运行 `npx -y bosscoding@latest init` 和 `npm install`，完整阅读根目录的 `AGENTS.md` 和已安装的 BossCoding 技能，再运行 `npm run preflight` 与 `npx bosscoding status`，确认规则和本地防手滑已经生效。除非需要我花钱、授权、删除数据或对外发布，其余步骤都由你完成。最后只问我：「你想做个什么？」
+请把当前打开的空文件夹作为我的新产品项目。先确认这里确实没有私人文件，再检查版本记录工具 Git 和运行工具 Node.js 是否可用；缺什么就用大白话告诉我，并尽力替我安装。然后依次运行 `npx -y @s-ry2005/bosscoding@latest init` 和 `npm install`，完整阅读根目录的 `AGENTS.md` 和已安装的 BossCoding 技能，再运行 `npm run preflight` 与 `npx bosscoding status`，确认规则和本地防手滑已经生效。除非需要我花钱、授权、删除数据或对外发布，其余步骤都由你完成。最后只问我：「你想做个什么？」
 ```
 
 接下来只管说想法。第一版会先在你的电脑上跑起来；在你亲眼看到并验收之前，AI 不会催你注册 GitHub 或购买服务器。
 
-上面这条命令安装的是 npm 上的上游公开版。要使用本 fork 已合并的增强流程，请看下一节。
+上面这条命令安装的是这个 fork 的正式改版，包含 `boss-closeout` 完整收尾流程。
 
 Kimi Code、Qwen Code、Cursor、GitHub Copilot、Trae、CodeBuddy、通义灵码、Gemini CLI 和 iFlow 也能读取同一份规则。
 
-### 使用这个 fork 的正式 main
+### 上游原版与这个改版的区别
 
-这个 fork 的 `main` 已包含第三个 `boss-closeout` 技能、GitHub Ubuntu CI 和 Windows 命令退出修复。但它尚未以独立包名发布到 npm，因此 `npx bosscoding@latest` 安装的是上游公开版本，**不会**自动带上本 fork 的增强流程。
-
-要在自己的电脑上使用本 fork，先克隆它：
-
-```powershell
-git clone https://github.com/s-ry2005/BossCoding.git
-```
-
-然后在新产品的空文件夹中安装该本地副本。把下面的 `<BossCoding-fork-路径>` 换成克隆后 `BossCoding` 文件夹的实际完整路径：
-
-```powershell
-npm install --save-dev "file:<BossCoding-fork-路径>"
-npx bosscoding init
-npm install
-npm run preflight
-npx bosscoding status
-```
-
-这样产品项目会明确依赖你的本 fork；以后 `npx bosscoding` 调用的也是本地安装的改版。该路径适合你自己的电脑；若要让其他电脑也能一键安装，需要另行决定包名、版本和 npm 发布，发布前必须取得你的确认。
+`npx -y bosscoding@latest init` 安装的是原作者发布的上游版；`npx -y @s-ry2005/bosscoding@latest init` 安装的是这个 fork 的改版。两者的命令名都叫 `bosscoding`，但只有改版包含第三个 `boss-closeout` 技能、真实线上验证、知识收尾、报告后确认与确认后清场。
 
 ### 环境选择：默认 Windows，明确才用 WSL
 
@@ -53,7 +35,7 @@ npx bosscoding status
 终端就是电脑里输入命令的应用。在刚才那个空文件夹的终端里依次运行：
 
 ```bash
-npx bosscoding@latest init
+npx -y @s-ry2005/bosscoding@latest init
 npm install
 ```
 

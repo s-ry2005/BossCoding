@@ -1,6 +1,6 @@
 {
-  "name": "bosscoding",
-  "version": "0.6.0",
+  "name": "@s-ry2005/bosscoding",
+  "version": "0.6.1",
   "description": "给不会编程的产品老板：一句话把 AI 协作规则、真实状态检查和安全收尾装进项目，Codex、Claude Code 等都能用。",
   "keywords": [
     "agent",
@@ -12,16 +12,16 @@
     "ai-coding",
     "vibe-coding"
   ],
-  "homepage": "https://github.com/KKKKhazix/BossCoding#readme",
+  "homepage": "https://github.com/s-ry2005/BossCoding#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KKKKhazix/BossCoding.git"
+    "url": "git+https://github.com/s-ry2005/BossCoding.git"
   },
   "bugs": {
-    "url": "https://github.com/KKKKhazix/BossCoding/issues"
+    "url": "https://github.com/s-ry2005/BossCoding/issues"
   },
   "license": "MIT",
-  "author": "Khazix",
+  "author": "s-ry2005",
   "type": "module",
   "bin": {
     "bosscoding": "bin/bosscoding.mjs",

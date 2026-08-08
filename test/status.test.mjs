@@ -9,10 +9,15 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { probe, runStatus, verifyRemoteUpload } from "../lib/commands/status.mjs";
 import { runInit } from "../lib/commands/init.mjs";
 import { runTask } from "../lib/commands/task.mjs";
+import { packageIdentity } from "../lib/package-identity.mjs";
+
+const FRAMEWORK_ROOT = fileURLToPath(new URL("../", import.meta.url));
+const FRAMEWORK_DEPENDENCY = packageIdentity().name;
 
 const GIT_ENV = {
   ...process.env,
@@ -150,12 +155,12 @@ test("探测：规则、官方门禁、四份技能、可解析依赖与测试�
     path.join(dir, "AGENTS.md"),
     agents.replace(/（本项目做什么[\s\S]*?）/, "给自己用的记账小工具，跑在本地。"),
   );
-  const dependencyDir = path.join(dir, "node_modules", "bosscoding");
+  const dependencyDir = path.join(dir, "node_modules", FRAMEWORK_DEPENDENCY);
   fs.mkdirSync(dependencyDir, { recursive: true });
   assert.equal(probe(dir).depsInstalled, false, "空目录不能冒充依赖已安装");
   fs.writeFileSync(path.join(dependencyDir, "package.json"), "{broken");
   assert.equal(probe(dir).depsInstalled, false, "损坏的依赖 package.json 不能冒充已安装");
-  fs.writeFileSync(path.join(dependencyDir, "package.json"), '{"name":"bosscoding","version":"0.5.0"}\n');
+  fs.writeFileSync(path.join(dependencyDir, "package.json"), `${JSON.stringify({ name: FRAMEWORK_DEPENDENCY, version: "0.5.0" })}\n`);
 
   fs.mkdirSync(path.join(dir, "test"), { recursive: true });
   fs.writeFileSync(path.join(dir, "test", "smoke.test.mjs"), "/* 最小产品测试 */\n");
@@ -299,7 +304,7 @@ test("缺本地门禁时，下一步只让 AI 用最新版全名恢复", () => {
   const { result, output } = capture(() => runStatus(dir));
   assert.equal(result, 0);
   const next = output.split("下一步：")[1];
-  assert.match(next, /npx -y bosscoding@latest update/);
+  assert.match(next, /npx -y @s-ry2005\/bosscoding@latest update/);
   assert.doesNotMatch(next, /npm install|提交一下|带我连上 GitHub/);
   assert.equal(output.match(/对 AI 说/g)?.length, 1, "缺门禁时不应同时派发第二个动作");
 });
@@ -343,10 +348,10 @@ test("任务已有提交但还没收尾时，下一步必须先验收和 finish"
     path.join(dir, "AGENTS.md"),
     agents.replace(/（本项目做什么[\s\S]*?）/, "给自己用的记账小工具，跑在本地。"),
   );
-  fs.mkdirSync(path.join(dir, "node_modules", "bosscoding"), { recursive: true });
+  fs.mkdirSync(path.join(dir, "node_modules", FRAMEWORK_DEPENDENCY), { recursive: true });
   fs.writeFileSync(
-    path.join(dir, "node_modules", "bosscoding", "package.json"),
-    '{"name":"bosscoding","version":"0.5.0"}\n',
+    path.join(dir, "node_modules", FRAMEWORK_DEPENDENCY, "package.json"),
+    `${JSON.stringify({ name: FRAMEWORK_DEPENDENCY, version: "0.5.0" })}\n`,
   );
   fs.mkdirSync(path.join(dir, "test"), { recursive: true });
   fs.writeFileSync(path.join(dir, "test", "smoke.test.mjs"), "process.exitCode = 0;\n");
@@ -362,10 +367,10 @@ test("任务已有提交但还没收尾时，下一步必须先验收和 finish"
   }
 
   try {
-    fs.mkdirSync(path.join(target, "node_modules", "bosscoding"), { recursive: true });
+    fs.mkdirSync(path.join(target, "node_modules", FRAMEWORK_DEPENDENCY), { recursive: true });
     fs.writeFileSync(
-      path.join(target, "node_modules", "bosscoding", "package.json"),
-      '{"name":"bosscoding","version":"0.5.0"}\n',
+      path.join(target, "node_modules", FRAMEWORK_DEPENDENCY, "package.json"),
+      `${JSON.stringify({ name: FRAMEWORK_DEPENDENCY, version: "0.5.0" })}\n`,
     );
     fs.writeFileSync(path.join(target, "done.txt"), "done\n");
     git(target, "add", "-A");
@@ -392,10 +397,10 @@ test("Codex 默认 codex/ 分支也被识别为待收尾任务", () => {
     path.join(dir, "AGENTS.md"),
     agents.replace(/（本项目做什么[\s\S]*?）/, "给自己用的三件事小工具，跑在本地。"),
   );
-  fs.mkdirSync(path.join(dir, "node_modules", "bosscoding"), { recursive: true });
+  fs.mkdirSync(path.join(dir, "node_modules", FRAMEWORK_DEPENDENCY), { recursive: true });
   fs.writeFileSync(
-    path.join(dir, "node_modules", "bosscoding", "package.json"),
-    '{"name":"bosscoding","version":"0.5.0"}\n',
+    path.join(dir, "node_modules", FRAMEWORK_DEPENDENCY, "package.json"),
+    `${JSON.stringify({ name: FRAMEWORK_DEPENDENCY, version: "0.5.0" })}\n`,
   );
   fs.mkdirSync(path.join(dir, "test"), { recursive: true });
   fs.writeFileSync(
@@ -471,10 +476,10 @@ test("已合并且保留的工作区不算进行中，也不把回收变成老�
     path.join(dir, "AGENTS.md"),
     agents.replace(/（本项目做什么[\s\S]*?）/, "给自己用的记账小工具，跑在本地。"),
   );
-  fs.mkdirSync(path.join(dir, "node_modules", "bosscoding"), { recursive: true });
+  fs.mkdirSync(path.join(dir, "node_modules", FRAMEWORK_DEPENDENCY), { recursive: true });
   fs.writeFileSync(
-    path.join(dir, "node_modules", "bosscoding", "package.json"),
-    '{"name":"bosscoding","version":"0.5.0"}\n',
+    path.join(dir, "node_modules", FRAMEWORK_DEPENDENCY, "package.json"),
+    `${JSON.stringify({ name: FRAMEWORK_DEPENDENCY, version: "0.5.0" })}\n`,
   );
   fs.mkdirSync(path.join(dir, "test"), { recursive: true });
   fs.writeFileSync(path.join(dir, "test", "smoke.test.mjs"), "process.exitCode = 0;\n");
@@ -549,4 +554,17 @@ test("状态：缺少或篡改完整收尾技能时不能亮绿", () => {
   const alteredState = probe(alteredDir);
   assert.equal(alteredState.skillsReady, false);
   assert.ok(alteredState.missingSkills.includes(".agents/skills/boss-closeout/SKILL.md"));
+});
+
+test("状态：框架仓库检查模板与 CI，不误报未安装产品资产", () => {
+  const state = probe(FRAMEWORK_ROOT, { remoteVerifier: () => "verified" });
+  assert.equal(state.frameworkMode, true);
+  assert.equal(state.hooksReady, true);
+  assert.equal(state.skillsReady, true);
+  assert.equal(state.ciReady, true);
+
+  const shown = capture(() => runStatus(FRAMEWORK_ROOT, { remoteVerifier: () => "verified" }));
+  assert.equal(shown.result, 0, shown.output);
+  assert.match(shown.output, /BossCoding 框架维护模式/);
+  assert.doesNotMatch(shown.output, /本地门禁缺失或过期|AI 技能缺失或过期/);
 });

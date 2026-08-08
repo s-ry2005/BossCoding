@@ -20,12 +20,12 @@ import { fileURLToPath } from "node:url";
 const HELP = `BossCoding——你是老板：需求你说，AI 干活，制度验收。
 
 用法：
-  npx -y bosscoding@latest init      第一次使用：给当前产品装好协作地基
+  npx -y @s-ry2005/bosscoding@latest init      第一次使用：给当前产品装好协作地基
   npx bosscoding status              看真实进度，以及此刻唯一的下一步
   npx bosscoding check               检查协作地基有没有明显风险
   npx bosscoding task <任务名>       给一项新需求开独立工作区
   npx bosscoding finish              验收后自检，并把当前任务安全并回主干
-  npx -y bosscoding@latest update    升级 BossCoding，再刷新它管理的文件
+  npx -y @s-ry2005/bosscoding@latest update    升级 BossCoding，再刷新它管理的文件
   npx bosscoding merge               只问「现在轮到这项任务合并了吗」
 
 你不必记命令。装好后只需对 AI 说：

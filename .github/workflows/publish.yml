@@ -31,4 +31,4 @@ jobs:
         # 发布是不可撤销的（npm 不允许重发同一版本号），所以守卫与测试必须在发货前跑。
         run: npm run preflight
       - name: 发布
-        run: npm publish
+        run: npm publish --access public
